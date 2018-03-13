@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+# coding: utf8
+
+"""
+project: CMDB_Client_Not_Seperated
+create date: 2018/3/13 
+__author__ = xiashuangxi
+命令行执行command命令模块
+"""
+
+
+import os
+import subprocess
+
+
+SYSTEM_ENV = os.environ.copy()
+SYSTEM_ENV["PATH"] = "/usr/sbin:/sbin:" + SYSTEM_ENV["PATH"]
+
+
+class CommandHandler(object):
+    def __init__(self):
+        pass
+
+    def getoutput(self, cmd):
+        return self.excute_command(cmd)
+
+    def getstatusoutput(self, cmd):
+        return self.excute_command(cmd, True)
+
+    def getstatus(self, filename):
+        cmd = "ls -ld %s" % filename
+        return self.excute_command(cmd)
+
+    def excute_command(self, cmd, code=False):
+        try:
+            result = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=SYSTEM_ENV)
+            result.wait()
+            return_string = result.stdout.readlines()
+        except Exception as e:
+            print e
+        else:
+            if code:
+                return_code = result.returncode
+                return return_code, return_string
+            else:
+                return return_string
+
+
+command_handler = CommandHandler()
+
+
+if __name__ == "__main__":
+    print CommandHandler().getoutput('dir')
