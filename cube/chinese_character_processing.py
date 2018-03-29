@@ -6,7 +6,7 @@ import re
 import pinyin
 # print pinyin.get('你好', format="strip", delimiter=" ")
 
-
+# 当中文转拼音后生成字符串长度大于15时会自动将转成只取中文拼音首字母(缩短文字长度)
 MAX_LENGTH = 15
 
 def clear_end_words(string):
